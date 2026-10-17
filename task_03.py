@@ -44,18 +44,30 @@ def benchmark():
     sizes = [100, 1000, 5000]
 
     print(
-        f"{'Розмір':<8} | {'Insertion (s)':<15} | {'Merge (s)':<12} | {'Timsort (s)':<12}"
+        f"{'Порівняння':<15} | {'Розмір':<8} | {'Insertion (s)':<15} | {'Merge (s)':<12} | {'Timsort (s)':<12}"
     )
-    print("-" * 55)
+    print("-" * 75)
 
     for size in sizes:
-        data = [random.randint(0, 10000) for _ in range(size)]
+        random_data = [random.randint(0, 100000) for _ in range(size)]
+        sorted_data = sorted(random_data)
+        reversed_data = list(reversed(sorted_data))
 
-        t_ins = timeit.timeit(lambda: insertion_sort(data), number=3) / 3
-        t_merge = timeit.timeit(lambda: merge_sort(data), number=3) / 3
-        t_tim = timeit.timeit(lambda: sorted(data), number=3) / 3
+        t_ins_random = timeit.timeit(lambda: insertion_sort(random_data), number=3) / 3
+        t_ins_sorted = timeit.timeit(lambda: insertion_sort(sorted_data), number=3) / 3
+        t_ins_reversed = timeit.timeit(lambda: insertion_sort(reversed_data), number=3) / 3
 
-        print(f"{size:<8} | {t_ins:<15.6f} | {t_merge:<12.6f} | {t_tim:<12.6f}")
+        t_merge_random = timeit.timeit(lambda: merge_sort(random_data), number=3) / 3
+        t_merge_sorted = timeit.timeit(lambda: merge_sort(sorted_data), number=3) / 3
+        t_merge_reversed = timeit.timeit(lambda: merge_sort(reversed_data), number=3) / 3
+
+        t_tim_random = timeit.timeit(lambda: sorted(random_data), number=3) / 3
+        t_tim_sorted = timeit.timeit(lambda: sorted(sorted_data), number=3) / 3
+        t_tim_reversed = timeit.timeit(lambda: sorted(reversed_data), number=3) / 3
+
+        print(f"{'Випадковий':<15} | {size:<8} | {t_ins_random:<15.6f} | {t_merge_random:<12.6f} | {t_tim_random:<12.6f}")
+        print(f"{'Відсортований':<15} | {size:<8} | {t_ins_sorted:<15.6f} | {t_merge_sorted:<12.6f} | {t_tim_sorted:<12.6f}")
+        print(f"{'Зворотний':<15} | {size:<8} | {t_ins_reversed:<15.6f} | {t_merge_reversed:<12.6f} | {t_tim_reversed:<12.6f}")
 
 
 if __name__ == "__main__":
